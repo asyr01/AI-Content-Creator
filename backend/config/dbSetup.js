@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import User from '../models/userModel.js';
 import ContentProject from '../models/contentProjectModel.js';
 
@@ -44,37 +43,3 @@ export const setupDatabase = async () => {
   }
 };
 
-export const getDatabaseStats = async () => {
-  try {
-    const userCount = await User.countDocuments();
-    const projectCount = await ContentProject.countDocuments();
-    
-    const projectStats = await ContentProject.aggregate([
-      {
-        $group: {
-          _id: '$projectType',
-          count: { $sum: 1 }
-        }
-      }
-    ]);
-
-    const statusStats = await ContentProject.aggregate([
-      {
-        $group: {
-          _id: '$status',
-          count: { $sum: 1 }
-        }
-      }
-    ]);
-
-    return {
-      users: userCount,
-      projects: projectCount,
-      projectsByType: projectStats,
-      projectsByStatus: statusStats
-    };
-  } catch (error) {
-    console.error('Error getting database stats:', error);
-    return null;
-  }
-};

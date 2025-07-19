@@ -1,4 +1,3 @@
-import googleTrends from 'google-trends-api';
 import { getJson } from "serpapi";
 import { getGeminiModel } from '../utils/geminiClient.js';
 // Category mapping for Google Trends
