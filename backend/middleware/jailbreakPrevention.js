@@ -1,7 +1,9 @@
 // Middleware to prevent jailbreak attempts and malicious prompts
 const jailbreakPatterns = [
   // API/Credential extraction attempts
-  /api\s*key/i,
+  /\bapi\s*key/i,
+  /give.*api/i,
+  /show.*api/i,
   /secret\s*key/i,
   /password/i,
   /token/i,
@@ -76,6 +78,10 @@ const checkForJailbreak = (text) => {
 
 const jailbreakPrevention = (req, res, next) => {
   try {
+    console.log('=== JAILBREAK PREVENTION MIDDLEWARE ===');
+    console.log('Request URL:', req.originalUrl);
+    console.log('Request Body Keys:', Object.keys(req.body));
+    
     // List of fields to check based on the route
     const fieldsToCheck = [];
     
