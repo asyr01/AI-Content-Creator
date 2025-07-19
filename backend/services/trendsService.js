@@ -54,7 +54,7 @@ const locationMapping = {
 const getRelatedQueries = async(data, language, location, category) => {
   const geminiModel = getGeminiModel();
   let prompt = `
-Analyze the trending data and select the top 3 most relevant keywords for ${category} in ${location}.
+Select the 3 most relevant ${category} keywords for e-commerce content creation.
 
 Category: ${category}
 Location: ${location} 
@@ -62,13 +62,15 @@ Language: ${language}
 
 Trending Data: ${JSON.stringify(data)}
 
-1. Only select keywords relevant to ${category}
-2. Choose the 3 most popular/relevant ones based on interest scores
-3. Return EXACTLY this format: [{"keyword": "example", "interest": 100, "Location": "${location}"}, {"keyword": "example2", "interest": 90, "Location": "${location}"}, {"keyword": "example3", "interest": 80, "Location": "${location}"}]
-4. Use the actual interest scores from the data
-5. Return only the JSON array, nothing else
+Requirements:
+- Choose keywords that are COMMERCIAL/SHOPPING related to ${category}
+- Prioritize brand names, product names, shopping terms  
+- Avoid entertainment content (TV shows, movies) unless they are product brands
+- Select keywords most useful for marketing ${category} products
 
-Examples:
+Return format: [{"keyword": "brand name", "interest": 90, "Location": "${location}"}]
+Return only the JSON array with 3 results.
+
 Input:
 - Location: Germany
 - Language: English
@@ -118,12 +120,22 @@ export const getTrendingKeywords = async (category, location, language) => {
     const apiKey = process.env.SERPAPI_KEY;
     const geo = locationMapping[location] || 'us';
     
+    // Get category-specific search terms
+    const searchTerms = categoryMapping[category.toLowerCase()] || [category];
+    const mainTerm = searchTerms[0];
+    
+    console.log('Category passed:', category);
+    console.log('Category mapping found:', searchTerms);
+    console.log('Main term for SerpAPI:', mainTerm);
+    console.log('Location (geo):', geo);
+    
     const response = await getJson({
-      engine: 'google_trends_trending_now',
+      engine: 'google_trends',
+      q: mainTerm,
       geo,
       api_key: apiKey,
-      q: category,
-      hours: '168'
+      date: 'now 7-d',
+      data_type: 'RELATED_QUERIES'
     });
     
     console.log('SerpAPI Response received:', JSON.stringify(response, null, 2));

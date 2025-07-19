@@ -89,13 +89,12 @@ export const createContentDraft = asyncHandler(async (req, res) => {
     const prompt = `
 Write a ${tone} ${category} blog post in ${language} for ${location} market.
 
-Use these trending keywords: ${trendKeywordsText}
+Trending keywords to include: ${trendKeywordsText}
 
 Requirements:
-- Include trending topics naturally
-- Match the ${tone} style
-- Write for ${location} audience  
-- Stay relevant to ${category}
+- Write in ${tone} tone for ${location} audience
+- Include the trending keywords naturally in the content
+- Focus on ${category} products/brands
  
 
  
