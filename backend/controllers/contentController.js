@@ -458,16 +458,13 @@ ${originalContent}
 export const generateImagePrompt = asyncHandler(async (req, res) => {
   const {
     title,
-    location,
-    language,
-    tone,
     category,
     baseContent,
     visualStyle,
-    contentIntent
+    aspectRatio
   } = req.body;
 
-  if (!title || !location || !language || !tone || !category || !baseContent) {
+  if (!title || !category || !baseContent) {
     res.status(400);
     throw new Error('Missing required fields');
   }
@@ -480,12 +477,10 @@ export const generateImagePrompt = asyncHandler(async (req, res) => {
       user: req.user._id,
       title,
       projectType: 'image-prompt',
-      location,
-      contentLanguage: language,
-      tone,
       category,
       originalContent: baseContent,
-      visualStyle: visualStyle || 'minimalistic, high-contrast background',
+      visualStyle: visualStyle || 'minimalistic, clean background',
+      aspectRatio: aspectRatio || 'square',
       status: 'generating'
     });
 
@@ -495,27 +490,23 @@ export const generateImagePrompt = asyncHandler(async (req, res) => {
     const geminiModel = getGeminiModel();
     
     const prompt = `
-Create a detailed, professional image generation prompt for e-commerce marketing based on the following content:
+Create a detailed image generation prompt for the following product:
 
-Content: "${baseContent}"
+Product Description: "${baseContent}"
+Category: ${category}
+Visual Style: ${visualStyle || 'minimalistic, clean background'}
+Aspect Ratio: ${aspectRatio || 'square'}
 
-Specifications:
-- Category: ${category}
-- Tone: ${tone}
-- Target Location: ${location}
-- Visual Style: ${visualStyle || 'minimalistic, high-contrast background'}
+Requirements:
+1. Write a clear, specific prompt for AI image generation
+2. Include lighting details (soft/dramatic/natural lighting)
+3. Specify background style and composition
+4. Define camera angle and framing based on the ${aspectRatio || 'square'} format
+5. Include colors and mood that match the specified visual style
+6. Include technical details for high-quality output
+7. Make it suitable for ${aspectRatio || 'square'} format photography
 
-Requirements for the image prompt:
-1. Create a detailed prompt suitable for professional e-commerce image generation
-2. Include specific product details, composition, lighting, and background
-3. Incorporate the ${tone} tone through visual elements (colors, mood, styling)
-4. Consider ${location} market preferences and cultural aesthetics
-5. Ensure the prompt results in high-quality, marketing-ready product visuals
-6. Include technical specifications like lighting setup, camera angle, and composition
-7. Specify background, props, and styling that enhance the product appeal
-8. Make it suitable for e-commerce platforms and marketing materials
-
-Generate a comprehensive, detailed image prompt that will create professional e-commerce product visuals that convert customers and represent the brand effectively.
+Generate a concise but detailed image prompt (2-3 sentences) that will produce a professional ${category} product image in ${aspectRatio || 'square'} format.
 `;
 
     let imagePrompt;
@@ -530,37 +521,7 @@ Generate a comprehensive, detailed image prompt that will create professional e-
       
       // Fallback image prompt generation
       imagePrompt = `Image prompt generation is temporarily unavailable due to API limits. Please try again in a few minutes.`;
-      
-      console.log('Fallback image prompt generated, length:', imagePrompt.length);
     }
-/* Color Palette
-State the main colors or mood of the palette (e.g., vibrant, muted, monochromatic).
-Avoid vague terms like "nice colors."
-Mood and Tone Consistency
-Ensure the mood matches the selected tone (e.g., persuasive, professional, friendly).
-Composition and Shape
-Specify the composition (e.g., close-up, full-body, bird’s-eye view) and the shape or aspect ratio (e.g., square 1:1, vertical 4:5 portrait, horizontal 16:9 banner).
-Platform Relevance
-Indicate the intended use (e.g., Instagram feed, website hero banner, online ad).
-Constraints
-Do not mention or repeat input variable names in the output.
-Do not use negative descriptions (e.g., "without background clutter"). Instead, describe what should be included.
-Do not include instructions, labels, bullet points, or headings in the output.
-Avoid ambiguous, generic adjectives like "nice," "good," or "cool."
-Use precise and specific language and synonyms (e.g., "sleek," "dynamic," "confident").
-Write in the selected language (${language}) only, using fluent, persuasive phrasing.
-The final output must be a single descriptive paragraph, ready to be used as an image-generation prompt.
-Example
-Input
-Location: [Location]
-Language: [Language]
-Tone: [Tone]
-Category: [Category]
-Visual Style Preference: Soft, pastel, friendly atmosphere
-Content Intent: I would like to create a post on Instagram to sell our man jeans.
-Output
- Create a high-resolution Instagram image showing a confident male model wearing a single pair of slim-fit dark-wash jeans, standing on a modern European city sidewalk surrounded by softly blurred architecture in warm pastel hues. The visual style should feel friendly and approachable, with a soft, pastel atmosphere that highlights the product in a contemporary yet inviting way. Use natural side lighting with gentle shadows to emphasize the denim’s texture and quality. The color palette should feature muted beige, dusty blue, and soft gray tones to support a persuasive, welcoming mood that resonates with style-conscious target market consumers. Format the composition as a vertical 4:5 portrait suitable for Instagram, with the model centered prominently in the frame and no distracting elements in the background.
-*/
 
     // Update project with generated prompt
     project.generatedContent = imagePrompt;
@@ -614,9 +575,21 @@ export const generateImage = asyncHandler(async (req, res) => {
     project.status = 'generating';
     await project.save();
 
+    // Get dimensions based on aspect ratio (using standard sizes that Pollinations.ai supports)
+    const aspectRatioDimensions = {
+      'square': { width: 1024, height: 1024 },
+      'portrait': { width: 768, height: 1024 },
+      'story': { width: 576, height: 1024 },
+      'landscape': { width: 1024, height: 576 },
+      'banner': { width: 1024, height: 384 },
+      'post': { width: 1024, height: 768 }
+    };
+    
+    const dimensions = aspectRatioDimensions[project.aspectRatio] || aspectRatioDimensions['square'];
+    
     // Use Pollinations.ai for free image generation (no API key required)
     const encodedPrompt = encodeURIComponent(prompt);
-    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&seed=${Date.now()}`;
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${dimensions.width}&height=${dimensions.height}&seed=${Date.now()}`;
     
     const response = await fetch(imageUrl);
 

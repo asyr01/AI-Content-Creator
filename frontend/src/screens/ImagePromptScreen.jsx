@@ -8,12 +8,10 @@ import Message from '../components/Message';
 const ImagePromptScreen = () => {
   const [formData, setFormData] = useState({
     title: '',
-    location: 'Germany',
-    language: 'English',
-    tone: 'professional',
     category: 'Technology',
     baseContent: '',
-    visualStyle: 'minimalistic, high-contrast background'
+    visualStyle: 'minimalistic, clean background',
+    aspectRatio: 'square'
   });
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,19 +27,13 @@ const ImagePromptScreen = () => {
     return null;
   }
 
-  const locations = [
-    'Germany', 'United States', 'United Kingdom', 'France', 'Italy', 
-    'Spain', 'Japan', 'Canada', 'Australia', 'Brazil', 'India', 'China'
-  ];
-
-  const languages = [
-    'English', 'German', 'French', 'Spanish', 'Italian', 'Portuguese', 
-    'Japanese', 'Chinese', 'Hindi', 'Arabic'
-  ];
-
-  const tones = [
-    'persuasive', 'professional', 'friendly', 'casual', 'formal', 
-    'enthusiastic', 'informative'
+  const aspectRatios = [
+    { value: 'square', label: 'Square (1:1)', measure: '1024x1024px' },
+    { value: 'portrait', label: 'Portrait (4:5)', measure: '1024x1280px' },
+    { value: 'story', label: 'Story (9:16)', measure: '720x1280px' },
+    { value: 'landscape', label: 'Landscape (16:9)', measure: '1920x1080px' },
+    { value: 'banner', label: 'Banner (3:1)', measure: '1800x600px' },
+    { value: 'post', label: 'Social Post (4:3)', measure: '1200x900px' }
   ];
 
   const categories = [
@@ -50,14 +42,14 @@ const ImagePromptScreen = () => {
   ];
 
   const visualStyles = [
-    'minimalistic, high-contrast background',
-    'luxury, gold accents, premium feel',
-    'modern, clean, corporate style',
-    'vibrant, colorful, energetic',
-    'soft, pastel, friendly atmosphere',
-    'dark, moody, dramatic lighting',
-    'bright, airy, lifestyle photography',
-    'flat lay, organized, professional'
+    'minimalistic, clean background',
+    'luxury, premium feel with gold accents',
+    'modern, professional corporate style',
+    'vibrant, energetic with bold colors',
+    'soft, elegant with natural lighting',
+    'dark, dramatic with moody lighting',
+    'bright, lifestyle photography style',
+    'flat lay, organized composition'
   ];
 
   const handleInputChange = (e) => {
@@ -71,7 +63,7 @@ const ImagePromptScreen = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.baseContent) {
+    if (!formData.title || !formData.category || !formData.baseContent) {
       setError('Please fill in all required fields');
       return;
     }
@@ -182,76 +174,37 @@ const ImagePromptScreen = () => {
                 {error && <Message variant="danger">{error}</Message>}
                 
                 <Form onSubmit={handleSubmit}>
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Project Title *</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="title"
-                          value={formData.title}
-                          onChange={handleInputChange}
-                          placeholder="e.g., Headphones Product Visual"
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Target Location *</Form.Label>
-                        <Form.Select
-                          name="location"
-                          value={formData.location}
-                          onChange={handleInputChange}
-                          required
-                        >
-                          {locations.map(location => (
-                            <option key={location} value={location}>{location}</option>
-                          ))}
-                        </Form.Select>
-                      </Form.Group>
-                    </Col>
-                  </Row>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Project Title *</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="title"
+                      value={formData.title}
+                      onChange={handleInputChange}
+                      placeholder="e.g., Headphones Product Visual"
+                      required
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label>Aspect Ratio</Form.Label>
+                    <Form.Select
+                      name="aspectRatio"
+                      value={formData.aspectRatio}
+                      onChange={handleInputChange}
+                    >
+                      {aspectRatios.map(ratio => (
+                        <option key={ratio.value} value={ratio.value}>
+                          {ratio.label} - {ratio.measure}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
 
                   <Row>
                     <Col md={6}>
                       <Form.Group className="mb-3">
-                        <Form.Label>Language *</Form.Label>
-                        <Form.Select
-                          name="language"
-                          value={formData.language}
-                          onChange={handleInputChange}
-                          required
-                        >
-                          {languages.map(language => (
-                            <option key={language} value={language}>{language}</option>
-                          ))}
-                        </Form.Select>
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Brand Tone *</Form.Label>
-                        <Form.Select
-                          name="tone"
-                          value={formData.tone}
-                          onChange={handleInputChange}
-                          required
-                        >
-                          {tones.map(tone => (
-                            <option key={tone} value={tone}>
-                              {tone.charAt(0).toUpperCase() + tone.slice(1)}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Category *</Form.Label>
+                        <Form.Label>Product Category *</Form.Label>
                         <Form.Select
                           name="category"
                           value={formData.category}
@@ -268,7 +221,7 @@ const ImagePromptScreen = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group className="mb-3">
-                        <Form.Label>Visual Style Preference</Form.Label>
+                        <Form.Label>Visual Style</Form.Label>
                         <Form.Select
                           name="visualStyle"
                           value={formData.visualStyle}
@@ -286,7 +239,7 @@ const ImagePromptScreen = () => {
 
                   <Form.Group className="mb-4">
                     <div className="d-flex justify-content-between align-items-center">
-                      <Form.Label>Base Content for Visual *</Form.Label>
+                      <Form.Label>Product Description *</Form.Label>
                       <Button 
                         variant="outline-secondary" 
                         size="sm"
@@ -301,7 +254,7 @@ const ImagePromptScreen = () => {
                       name="baseContent"
                       value={formData.baseContent}
                       onChange={handleInputChange}
-                      placeholder="Provide the content or description that the image should visually represent..."
+                      placeholder="Describe the product you want to create an image for..."
                       required
                     />
                     <Form.Text className="text-muted">

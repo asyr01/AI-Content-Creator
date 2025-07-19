@@ -21,16 +21,20 @@ const contentProjectSchema = new mongoose.Schema({
   location: {
     type: String,
     required: function() {
-      return this.projectType !== 'content-modification';
+      return this.projectType === 'content-drafting';
     }
   },
   contentLanguage: {
     type: String,
-    required: true
+    required: function() {
+      return this.projectType !== 'image-prompt';
+    }
   },
   tone: {
     type: String,
-    required: true,
+    required: function() {
+      return this.projectType !== 'image-prompt';
+    },
     enum: ['persuasive', 'professional', 'friendly', 'casual', 'formal', 'enthusiastic', 'informative']
   },
   category: {
@@ -61,6 +65,10 @@ const contentProjectSchema = new mongoose.Schema({
   // Image Prompt specific fields
   visualStyle: {
     type: String
+  },
+  aspectRatio: {
+    type: String,
+    enum: ['square', 'portrait', 'story', 'landscape', 'banner', 'post']
   },
   generatedImageUrl: {
     type: String
