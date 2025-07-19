@@ -1,5 +1,6 @@
 import express from 'express';
 import { protect } from '../middleware/authMiddleware.js';
+import jailbreakPrevention from '../middleware/jailbreakPrevention.js';
 import { 
   generateResponse, 
   getConversations, 
@@ -9,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.route('/chat').post(protect, generateResponse);
+router.route('/chat').post(protect, jailbreakPrevention, generateResponse);
 router.route('/conversations').get(protect, getConversations);
 router.route('/conversations/:id')
   .get(protect, getConversation)

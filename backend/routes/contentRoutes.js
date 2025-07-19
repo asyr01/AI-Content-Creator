@@ -1,5 +1,6 @@
 import express from 'express';
 import { protect } from '../middleware/authMiddleware.js';
+import jailbreakPrevention from '../middleware/jailbreakPrevention.js';
 import { 
   createContentDraft,
   modifyContent,
@@ -12,10 +13,10 @@ import {
 
 const router = express.Router();
 
-// Content creation routes
-router.route('/draft').post(protect, createContentDraft);
-router.route('/modify').post(protect, modifyContent);
-router.route('/image-prompt').post(protect, generateImagePrompt);
+// Content creation routes (with jailbreak prevention)
+router.route('/draft').post(protect, jailbreakPrevention, createContentDraft);
+router.route('/modify').post(protect, jailbreakPrevention, modifyContent);
+router.route('/image-prompt').post(protect, jailbreakPrevention, generateImagePrompt);
 router.route('/generate-image').post(protect, generateImage);
 
 // Project management routes
