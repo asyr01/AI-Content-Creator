@@ -35,7 +35,6 @@ The AI Content Creator is a comprehensive platform designed for e-commerce busin
 - **📊 Project Dashboard** - Track and organize all content creation projects by type and status
 - **📈 Analytics & Insights** - Monitor user statistics including total projects, content drafts, modifications, and image prompts
 - **👥 User Management** - Multi-user support with admin panel and role-based access control
-- **💬 AI Chat Interface** - Interactive Gemini AI chat with conversation history
 - **📱 Responsive Design** - Seamless experience across all devices with Bootstrap UI
 
 ## 🛠️ Technology Stack
@@ -186,7 +185,7 @@ npm start
 ### 🎯 Getting Started
 
 1. **Register/Login** - Create an account or sign in to access the platform
-2. **Choose Content Type** - Select from four main content creation options
+2. **Choose Content Type** - Select from three main content creation options
 3. **Configure Settings** - Set your target market, language, and tone preferences
 4. **Generate Content** - Let AI create professional content based on current trends
 
@@ -226,11 +225,6 @@ npm start
 4. **Generate Prompt** - Get detailed AI image generation instructions optimized for your specifications
 5. **Generate Image** - Create actual images using integrated Pollinations.ai service
 
-### 💬 AI Chat Interface
-
-- **Interactive Conversations** - Direct chat with Gemini AI for content advice
-- **Conversation History** - View and continue previous conversations
-- **Context Awareness** - AI maintains conversation context across sessions
 
 ## 🔗 API Documentation
 
@@ -258,13 +252,6 @@ GET    /api/content/projects/:id - Get specific project
 DELETE /api/content/projects/:id - Delete project
 ```
 
-### AI Chat Endpoints
-```
-POST /api/gemini/chat           - Send chat message
-GET  /api/gemini/conversations  - Get user's conversations
-GET  /api/gemini/conversations/:id - Get specific conversation
-DELETE /api/gemini/conversations/:id - Delete conversation
-```
 
 ### Admin Endpoints
 ```
@@ -284,7 +271,6 @@ content-gen/
 │   │   └── dbSetup.js               # Database indexes and optimization
 │   ├── controllers/
 │   │   ├── contentController.js      # Content creation logic with trend integration
-│   │   ├── geminiController.js       # AI chat functionality with conversation history
 │   │   └── userController.js         # User management with statistics
 │   ├── middleware/
 │   │   ├── asyncHandler.js          # Async error handling wrapper
@@ -294,11 +280,9 @@ content-gen/
 │   │   └── jailbreakPrevention.js    # AI security and prompt injection protection
 │   ├── models/
 │   │   ├── contentProjectModel.js    # Content projects schema with project types
-│   │   ├── conversationModel.js      # Chat conversations schema
 │   │   └── userModel.js              # User data schema with preferences and statistics
 │   ├── routes/
 │   │   ├── contentRoutes.js          # Content creation endpoints
-│   │   ├── geminiRoutes.js           # AI chat endpoints
 │   │   └── userRoutes.js             # User management endpoints
 │   ├── services/
 │   │   └── trendsService.js          # Google Trends integration via SerpAPI
@@ -326,11 +310,8 @@ content-gen/
 │   │   │   ├── Meta.jsx             # SEO meta tags component
 │   │   │   └── PrivateRoute.jsx     # Authentication route protection
 │   │   ├── screens/                 # Page components
-│   │   │   ├── ChatScreen.jsx       # AI chat interface
 │   │   │   ├── ContentDraftScreen.jsx    # Content drafting form
 │   │   │   ├── ContentModifyScreen.jsx   # Content modification form
-│   │   │   ├── ConversationDetailScreen.jsx # Chat conversation details
-│   │   │   ├── ConversationsScreen.jsx   # Chat history listing
 │   │   │   ├── HomeScreen.jsx            # Landing page with feature overview
 │   │   │   ├── ImagePromptScreen.jsx     # Image prompt generation form
 │   │   │   ├── LoginScreen.jsx           # User login form
