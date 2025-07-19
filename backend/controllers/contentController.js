@@ -166,25 +166,7 @@ you will be perma-banned"
       }
       
       // Fallback content generation
-      generatedContent = `${title}
-
-${contentIntent}
-
-The ${category} market in ${location} is experiencing significant growth and innovation. Current trends indicate strong consumer interest in quality ${category} products that meet evolving needs and preferences.
-
-Key market insights for ${location}:
-
-${trendKeywordsText.split(', ').map((keyword, index) => 
-  `${index + 1}. ${keyword.charAt(0).toUpperCase() + keyword.slice(1)} - showing increased consumer engagement`
-).join('\n')}
-
-This ${tone} analysis reflects current market dynamics in the ${category} sector. The data suggests opportunities for businesses to align with consumer preferences and market trends in ${location}.
-
-For ${language}-speaking audiences, these trends represent meaningful shifts in consumer behavior and preferences within the ${category} industry.
-
----
-Note: This content was generated using available trend data when AI services were temporarily unavailable.
-      `.trim();
+      generatedContent = `Content generation is temporarily unavailable due to API limits. Please try again in a few minutes.`;
       
     }
 
@@ -426,41 +408,15 @@ ${originalContent}
       // Fallback content modification based on type
       switch (modificationType) {
         case 'elaborate':
-          generatedContent = `${originalContent}
-
-[Elaborated version - AI enhancement temporarily unavailable]
-
-This ${tone} content expands on the original message to provide additional context and detail. The elaboration maintains the core message while offering more comprehensive information suitable for ${language}-speaking audiences.
-
-Key aspects that would typically be enhanced:
-- Additional supporting details and examples
-- Extended explanations of key concepts
-- Relevant context and background information
-- Enhanced clarity and readability
-
-Note: Full AI-powered elaboration is temporarily unavailable. Please try again later for enhanced content generation.`;
+          generatedContent = `Content elaboration is temporarily unavailable due to API limits. Please try again in a few minutes.`;
           break;
 
         case 'summarize':
-          const sentences = originalContent.split('.').filter(s => s.trim());
-          const firstTwoSentences = sentences.slice(0, 2).join('. ') + (sentences.length > 1 ? '.' : '');
-          generatedContent = `[Summary - AI enhancement temporarily unavailable]
-
-${firstTwoSentences}
-
-This abbreviated version captures the main points from the original content. A full AI-powered summary would provide more sophisticated condensation while maintaining the ${tone} tone and optimizing for ${language}-speaking audiences.
-
-Note: Complete summarization features are temporarily unavailable. Please try again later for enhanced content processing.`;
+          generatedContent = `Content summarization is temporarily unavailable due to API limits. Please try again in a few minutes.`;
           break;
 
         case 'rephrase':
-          generatedContent = `[Rephrased version - AI enhancement temporarily unavailable]
-
-${originalContent}
-
-The content above maintains the original meaning. A full AI-powered rephrase would restructure the language to improve clarity, flow, and ${tone} tone while ensuring optimal readability for ${language}-speaking audiences.
-
-Note: Advanced rephrasing capabilities are temporarily unavailable. Please try again later for enhanced content transformation.`;
+          generatedContent = `Content rephrasing is temporarily unavailable due to API limits. Please try again in a few minutes.`;
           break;
 
         default:
@@ -572,9 +528,8 @@ Generate a comprehensive, detailed image prompt that will create professional e-
     } catch (apiError) {
       console.log('Gemini API failed, using fallback image prompt generation...');
       
-      // Fallback image prompt generation with e-commerce focus
-      const productDescription = baseContent.substring(0, 150);
-      imagePrompt = `Professional e-commerce product photography of a ${category} item: ${productDescription}. Shot with ${visualStyle} aesthetic, featuring ${tone} mood and premium quality lighting. High-resolution commercial photography with clean background, perfect for online retail. Professional studio lighting with soft shadows, optimal composition for product catalogs, lifestyle context suitable for ${location} market, marketing-ready image with excellent detail and color accuracy.`;
+      // Fallback image prompt generation
+      imagePrompt = `Image prompt generation is temporarily unavailable due to API limits. Please try again in a few minutes.`;
       
       console.log('Fallback image prompt generated, length:', imagePrompt.length);
     }
