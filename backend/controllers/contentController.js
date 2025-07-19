@@ -552,7 +552,7 @@ export const generateImagePrompt = asyncHandler(async (req, res) => {
     const geminiModel = getGeminiModel();
     
     const prompt = `
-Create a detailed image generation prompt based on the following content and specifications:
+Create a simple, effective image generation prompt based on the following content:
 
 Content: "${baseContent}"
 
@@ -563,14 +563,16 @@ Specifications:
 - Visual Style: ${visualStyle || 'minimalistic, high-contrast background'}
 
 Requirements for the image prompt:
-1. Create a detailed prompt suitable for AI image generation tools (like DALL-E, Midjourney, or SORA)
-2. Include specific visual elements that align with the ${category} category
-3. Incorporate the ${tone} tone through visual elements (colors, composition, mood)
-4. Consider ${location} cultural preferences and market expectations
-5. Ensure the prompt results in professional, marketing-ready visuals
-6. Include technical specifications like lighting, composition, and style details
+1. Create a CONCISE prompt (maximum 200 characters) suitable for AI image generation
+2. Focus on the main subject and key visual elements only
+3. Include the visual style: ${visualStyle}
+4. Use simple, clear descriptive words
+5. Avoid technical jargon, long explanations, or markdown formatting
+6. Make it ${tone} in mood and suitable for ${location} market
 
-Generate a comprehensive image prompt that will create visuals perfectly aligned with the content and brand voice.
+Example format: "A [subject] with [key features], [visual style], [mood/tone], professional marketing photo"
+
+Generate a SHORT, simple image prompt that will create effective visuals.
 `;
 
     let imagePrompt;
@@ -584,19 +586,7 @@ Generate a comprehensive image prompt that will create visuals perfectly aligned
       console.log('Gemini API failed, using fallback image prompt generation...');
       
       // Fallback image prompt generation
-      
-      imagePrompt = `You are an assistant that generates high-quality visual prompts for AI image-generation tools such as Sora. Your role is to transform structured inputs into a single, descriptive visual prompt that guides the model to produce a marketing-ready image. Your output must be clear, detailed, and unambiguous, helping the model accurately visualize the desired scene.
-Use the following user-provided inputs:
-Location: ${location}
-Language: ${language}
-Tone: ${tone}
-Category: ${category}
-Visual Style Preference: ${visualStyle}
-Content Intent: ${originalContent}
-Objective
-Produce a fluent, platform-ready descriptive paragraph that fully captures the desired image. The description should reflect the user's campaign intent, target audience, and brand style. It must be clear enough to avoid ambiguity, focus on what should be included, and provide all necessary details to achieve a consistent, high-quality result.
-Output Structure
-Include the following elements in a cohesive paragraph, using precise, specific word choice:
+      imagePrompt = `A ${category} product with ${baseContent.substring(0, 100)}, ${visualStyle}, ${tone} mood, professional marketing photo`;
 Subject Focus
 Identify exactly what product, person, or scene is featured.
 Use singular or numbered plural forms (e.g., "a single model," "three pairs of shoes") for clarity.
