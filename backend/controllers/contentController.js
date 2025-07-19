@@ -104,19 +104,19 @@ Length: ${desiredLength}
 
 Rules:
 Input: 
-- Location: Germany 
-- Language: English 
-- Tone: Persuasive 
-- Category: Apparel 
+- Location: [Location] 
+- Language: [Language] 
+- Tone: [Tone] 
+- Category: [Category] 
 - Given Task: Write a blog post about rising fashions in the Future. 
 Output Example: 
 Which fashion is rising in the Future?
 Germany’s fashion landscape is undergoing a transformation—and if you're in the apparel business, now is the time to ride the wave of change. Recent consumer trends reveal a strong surge in interest toward future-facing fashion styles that blend sustainability, innovation, and personalization.
-Search data shows that terms like “eco-friendly streetwear,” “modular fashion,” and “tech-integrated clothing” are rapidly gaining momentum across German audiences. These aren’t just fleeting keywords—they represent a shift in how consumers perceive clothing: not just as products, but as experiences and statements.
+Search data shows that terms like “eco-friendly streetwear,” “modular fashion,” and “tech-integrated clothing” are rapidly gaining momentum across target audiences. These aren’t just fleeting keywords—they represent a shift in how consumers perceive clothing: not just as products, but as experiences and statements.
 Eco-friendly streetwear is leading the charge, appealing especially to Gen Z and millennial shoppers who value both aesthetics and ethical sourcing. Organic cotton, recycled fabrics, and minimalist yet expressive designs are turning heads online—and in-store. For retailers, this is an opportunity to position themselves not just as fashion providers, but as contributors to a greener planet.
-Equally compelling is the rise of modular clothing—garments designed with interchangeable parts or adjustable elements. In a world where flexibility is key, consumers are embracing items that can evolve with their needs, offering more value and uniqueness per purchase. This trend plays especially well in urban centers like Berlin, where individuality and practicality coexist.
+Equally compelling is the rise of modular clothing—garments designed with interchangeable parts or adjustable elements. In a world where flexibility is key, consumers are embracing items that can evolve with their needs, offering more value and uniqueness per purchase. This trend plays especially well in urban centers in the target market, where individuality and practicality coexist.
 Another game-changer is tech-integrated fashion. From temperature-adapting fabrics to garments that sync with wearables, fashion is moving into the digital age. Shoppers are increasingly intrigued by clothing that doesn’t just look good but performs smartly. As search volumes grow for phrases like “wearable fashion tech” and “AI-designed outfits,” brands that innovate here are likely to dominate the conversation.
-For apparel brands targeting Germany, aligning with these emerging interests isn’t optional—it’s essential. By embracing the future now, you’re not just following trends. You’re leading them.
+For apparel brands targeting the specified location, aligning with these emerging interests isn’t optional—it’s essential. By embracing the future now, you’re not just following trends. You’re leading them.
 So, which fashion is rising in the future? The answer is clear: sustainable, smart, and modular. And the time to act is now.
  
 Now, generate an initial promotional blog post draft based on trend data and user inputs. 
@@ -294,9 +294,9 @@ Style: Detailed, natural, value-driven
 Output: Plain text elaborated version
 Examples:
  Input:
-Language: English
+Language: [Language]
 
-Tone: Persuasive
+Tone: [Tone]
 
 Given Text:
  "Our customer support team is here to help."
@@ -347,9 +347,9 @@ Output: Plain text summary only
 
 Examples:
  Input:
-Language: English
+Language: [Language]
 
-Tone: Professional
+Tone: [Tone]
 
 Given Text:
 "Our internal training program is undergoing a major update this year. The new model will focus on hybrid learning, combining in-person workshops with flexible online modules. We've partnered with leading industry experts to design the new curriculum, ensuring it meets the evolving needs of our workforce. Employees will have access to certifications in areas like leadership, data literacy, and digital tools. We're also introducing mentorship programs and peer-to-peer learning to enhance collaboration and knowledge sharing. The rollout will begin in Q3, starting with high-priority departments. Managers will receive a toolkit to help guide their teams through the transition."
@@ -398,9 +398,9 @@ Style: Fluent, clear, tone-aligned
 Output: Plain text rephrased version only
 Examples:
  Input:
-Language: English
+Language: [Language]
 
-Tone: Professional
+Tone: [Tone]
 
 Given Text:
  "Our company has always been committed to delivering high-quality solutions tailored to client needs. Over the past year, we've invested heavily in improving our development process, ensuring greater speed and stability. We've also expanded our team with experienced professionals in UX design, data engineering, and AI. These changes allow us to offer even more innovative, scalable, and secure solutions to our clients. We understand that every project is unique, and we approach each one with fresh eyes. Thank you for trusting us as your partner in digital transformation."
@@ -610,14 +610,14 @@ Write in the selected language (${language}) only, using fluent, persuasive phra
 The final output must be a single descriptive paragraph, ready to be used as an image-generation prompt.
 Example
 Input
-Location: Germany
-Language: English
-Tone: Persuasive
-Category: Fashion
+Location: [Location]
+Language: [Language]
+Tone: [Tone]
+Category: [Category]
 Visual Style Preference: Soft, pastel, friendly atmosphere
 Content Intent: I would like to create a post on Instagram to sell our man jeans.
 Output
- Create a high-resolution Instagram image showing a confident male model wearing a single pair of slim-fit dark-wash jeans, standing on a modern European city sidewalk surrounded by softly blurred architecture in warm pastel hues. The visual style should feel friendly and approachable, with a soft, pastel atmosphere that highlights the product in a contemporary yet inviting way. Use natural side lighting with gentle shadows to emphasize the denim’s texture and quality. The color palette should feature muted beige, dusty blue, and soft gray tones to support a persuasive, welcoming mood that resonates with style-conscious German consumers. Format the composition as a vertical 4:5 portrait suitable for Instagram, with the model centered prominently in the frame and no distracting elements in the background.
+ Create a high-resolution Instagram image showing a confident male model wearing a single pair of slim-fit dark-wash jeans, standing on a modern European city sidewalk surrounded by softly blurred architecture in warm pastel hues. The visual style should feel friendly and approachable, with a soft, pastel atmosphere that highlights the product in a contemporary yet inviting way. Use natural side lighting with gentle shadows to emphasize the denim’s texture and quality. The color palette should feature muted beige, dusty blue, and soft gray tones to support a persuasive, welcoming mood that resonates with style-conscious target market consumers. Format the composition as a vertical 4:5 portrait suitable for Instagram, with the model centered prominently in the frame and no distracting elements in the background.
 */
 
     // Update project with generated prompt

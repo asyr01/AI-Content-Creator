@@ -71,9 +71,9 @@ Return format: [{"keyword": "exact keyword from data", "interest": actual_score,
 Return only the JSON array with 3 results using REAL data only.
 
 Input:
-- Location: Germany
-- Language: English
-- Category: Football
+- Location: [User Location]
+- Language: [User Language]  
+- Category: [User Category]
 - Trend Data: [{ "keyword": "Transformer toy", "interest": 1350, "Location": "Germany" }, , { "keyword": "Jamal Musiala", "interest": 1250, "Location": "Germany" }, { "keyword": "PlayStation", "interest": 50, "Location": "Germany" }, { "keyword": "Michael Phelps", "interest": 1100, "Location": "Germany" }, { "keyword": "Rubik’s Cube", "interest": 300, "Location": "Germany" }, { "keyword": "Coco Gauff", "interest": 700, "Location": "Germany" }, { "keyword": "Titanic (film)", "interest": 150, "Location": "Germany" }, { "keyword": "Conor McGregor", "interest": 950, "Location": "Germany" }, { "keyword": "Usain Bolt", "interest": 400, "Location": "Germany" }, { "keyword": "Barbie", "interest": 100, "Location": "Germany" }, { "keyword": "Roger Federer", "interest": 600, "Location": "Germany" }, { "keyword": "Thomas Müller", "interest": 1400, "Location": "Germany" }, { "keyword": "Tiger Woods", "interest": 750, "Location": "Germany" }, { "keyword": "Shohei Ohtani", "interest": 200, "Location": "Germany" }, { "keyword": "Novak Djokovic", "interest": 1050, "Location": "Germany" }, { "keyword": "LeBron James", "interest": 1450, "Location": "Germany" }, { "keyword": "Jonas Salk", "interest": 250, "Location": "Germany" }, { "keyword": "Harry Potter (book series)", "interest": 500, "Location": "Germany" }, { "keyword": "Khabib Nurmagomedov", "interest": 850, "Location": "Germany" }, , { "keyword": "Serena Williams", "interest": 1200, "Location": "Germany" }, { "keyword": "Lewis Hamilton", "interest": 1500, "Location": "Germany" }, { "keyword": "Virat Kohli", "interest": 650, "Location": "Germany" }, ]
 
 Output Example:
