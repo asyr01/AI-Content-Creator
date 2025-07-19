@@ -4,6 +4,7 @@ import {
   createContentDraft,
   modifyContent,
   generateImagePrompt,
+  generateImage,
   getUserProjects,
   getProject,
   deleteProject
@@ -15,6 +16,7 @@ const router = express.Router();
 router.route('/draft').post(protect, createContentDraft);
 router.route('/modify').post(protect, modifyContent);
 router.route('/image-prompt').post(protect, generateImagePrompt);
+router.route('/generate-image').post(protect, generateImage);
 
 // Project management routes
 router.route('/projects').get(protect, getUserProjects);

@@ -18,6 +18,8 @@ const ImagePromptScreen = () => {
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState(null);
   
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
@@ -116,6 +118,51 @@ const ImagePromptScreen = () => {
       ...prev,
       baseContent: "Introducing our latest premium wireless headphones with advanced noise cancellation technology. Experience crystal-clear audio quality and all-day comfort with our revolutionary design that combines style and performance."
     }));
+  };
+
+  const handleGenerateImage = async () => {
+    if (!result?.project?._id || !result?.imagePrompt) {
+      setError('No prompt available to generate image');
+      return;
+    }
+
+    setIsGeneratingImage(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/content/generate-image', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          projectId: result.project._id,
+          prompt: result.imagePrompt
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = 'Failed to generate image';
+        
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.message || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      setGeneratedImage(data.imageUrl);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsGeneratingImage(false);
+    }
   };
 
   return (
@@ -347,6 +394,54 @@ const ImagePromptScreen = () => {
                     </Card.Body>
                   </Card>
 
+                  <div className="mt-4 text-center">
+                    <Button 
+                      variant="primary" 
+                      size="lg"
+                      onClick={handleGenerateImage}
+                      disabled={isGeneratingImage}
+                      className="me-3"
+                    >
+                      {isGeneratingImage ? (
+                        <>
+                          <Spinner animation="border" size="sm" className="me-2" />
+                          Generating Image...
+                        </>
+                      ) : (
+                        '🎨 Generate Image with This Prompt'
+                      )}
+                    </Button>
+                  </div>
+
+                  {generatedImage && (
+                    <Card className="mt-4">
+                      <Card.Header>
+                        <h5 className="mb-0">Generated Image</h5>
+                      </Card.Header>
+                      <Card.Body className="text-center">
+                        <img 
+                          src={generatedImage} 
+                          alt="Generated from prompt" 
+                          className="img-fluid rounded shadow"
+                          style={{ maxHeight: '500px', maxWidth: '100%' }}
+                        />
+                        <div className="mt-3">
+                          <Button 
+                            variant="outline-success" 
+                            onClick={() => {
+                              const link = document.createElement('a');
+                              link.href = generatedImage;
+                              link.download = `generated-image-${Date.now()}.png`;
+                              link.click();
+                            }}
+                          >
+                            📥 Download Image
+                          </Button>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  )}
+
                   <div className="mt-3 text-center">
                     <Button 
                       variant="success" 
@@ -357,7 +452,10 @@ const ImagePromptScreen = () => {
                     </Button>
                     <Button 
                       variant="outline-primary" 
-                      onClick={() => setResult(null)}
+                      onClick={() => {
+                        setResult(null);
+                        setGeneratedImage(null);
+                      }}
                     >
                       Create Another
                     </Button>

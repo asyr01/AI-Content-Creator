@@ -62,6 +62,9 @@ const contentProjectSchema = new mongoose.Schema({
   visualStyle: {
     type: String
   },
+  generatedImageUrl: {
+    type: String
+  },
   
   // Generated content
   generatedContent: {

@@ -520,7 +520,8 @@ export const generateImagePrompt = asyncHandler(async (req, res) => {
     tone,
     category,
     baseContent,
-    visualStyle
+    visualStyle,
+    contentIntent
   } = req.body;
 
   if (!title || !location || !language || !tone || !category || !baseContent) {
@@ -545,11 +546,6 @@ export const generateImagePrompt = asyncHandler(async (req, res) => {
       status: 'generating'
     });
 
-    await project.save();
-
-    // Find what's popular right now for context
-    const trendingKeywords = await getTrendingKeywords(category, location, language, contentIntent);
-    project.trendingKeywords = trendingKeywords;
     await project.save();
 
     // Generate image prompt using Gemini AI
@@ -588,7 +584,6 @@ Generate a comprehensive image prompt that will create visuals perfectly aligned
       console.log('Gemini API failed, using fallback image prompt generation...');
       
       // Fallback image prompt generation
-      const trendKeywordsText = trendingKeywords.map(k => k.keyword).join(', ');
       
       imagePrompt = `You are an assistant that generates high-quality visual prompts for AI image-generation tools such as Sora. Your role is to transform structured inputs into a single, descriptive visual prompt that guides the model to produce a marketing-ready image. Your output must be clear, detailed, and unambiguous, helping the model accurately visualize the desired scene.
 Use the following user-provided inputs:
@@ -657,7 +652,6 @@ Output
       success: true,
       project: project,
       imagePrompt: imagePrompt,
-      trendingKeywords,
       baseContent
     });
 
@@ -671,6 +665,76 @@ Output
     
     res.status(500);
     throw new Error('Failed to generate image prompt');
+  }
+});
+
+// Generate actual image using Hugging Face free API
+export const generateImage = asyncHandler(async (req, res) => {
+  const { projectId, prompt } = req.body;
+
+  if (!projectId || !prompt) {
+    res.status(400);
+    throw new Error('Project ID and prompt are required');
+  }
+
+  try {
+    // Find the project
+    const project = await ContentProject.findOne({
+      _id: projectId,
+      user: req.user._id
+    });
+
+    if (!project) {
+      res.status(404);
+      throw new Error('Project not found');
+    }
+
+    project.status = 'generating';
+    await project.save();
+
+    // Use Pollinations.ai for free image generation (no API key required)
+    const encodedPrompt = encodeURIComponent(prompt);
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&seed=${Date.now()}`;
+    
+    const response = await fetch(imageUrl);
+
+    if (!response.ok) {
+      throw new Error(`Image generation failed: ${response.status}`);
+    }
+
+    // Get the image as buffer
+    const imageBuffer = await response.arrayBuffer();
+    
+    // Convert to base64 for storage/display
+    const base64Image = Buffer.from(imageBuffer).toString('base64');
+    const imageDataUrl = `data:image/png;base64,${base64Image}`;
+
+    // Update project with generated image
+    project.generatedImageUrl = imageDataUrl;
+    project.status = 'completed';
+    await project.save();
+
+    // Track user activity
+    await updateUserStats(req.user._id, 'image-generation');
+
+    res.json({
+      success: true,
+      project: project,
+      imageUrl: imageDataUrl
+    });
+
+  } catch (error) {
+    console.error('Image generation error:', error);
+    
+    // Update project status to failed
+    const project = await ContentProject.findById(projectId);
+    if (project) {
+      project.status = 'failed';
+      await project.save();
+    }
+    
+    res.status(500);
+    throw new Error('Failed to generate image');
   }
 });
 

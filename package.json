@@ -27,6 +27,7 @@
     "google-trends-api": "^4.9.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.1",
+    "openai": "^5.10.1",
     "serpapi": "^2.1.0"
   },
   "devDependencies": {
