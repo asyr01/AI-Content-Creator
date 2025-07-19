@@ -4,6 +4,8 @@ const jailbreakPatterns = [
   /\bapi\s*key/i,
   /give.*api/i,
   /show.*api/i,
+  /tell.*api/i,
+  /what.*api/i,
   /secret\s*key/i,
   /password/i,
   /token/i,
@@ -78,10 +80,6 @@ const checkForJailbreak = (text) => {
 
 const jailbreakPrevention = (req, res, next) => {
   try {
-    console.log('=== JAILBREAK PREVENTION MIDDLEWARE ===');
-    console.log('Request URL:', req.originalUrl);
-    console.log('Request Body Keys:', Object.keys(req.body));
-    
     // List of fields to check based on the route
     const fieldsToCheck = [];
     
@@ -108,10 +106,6 @@ const jailbreakPrevention = (req, res, next) => {
       }
     }
     
-    // Log successful validation for monitoring
-    if (fieldsToCheck.length > 0) {
-      console.log(`Jailbreak prevention passed for fields: ${fieldsToCheck.join(', ')}`);
-    }
     
     next();
   } catch (error) {
