@@ -27,7 +27,8 @@ export const setupDatabase = async () => {
         generatedContent: 'text',
         originalContent: 'text'
       }, {
-        name: 'content_text_search'
+        name: 'content_text_search',
+        default_language: 'none'
       });
       console.log('Text search indexes created successfully!');
     } catch (error) {

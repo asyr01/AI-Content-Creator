@@ -24,7 +24,7 @@ const contentProjectSchema = new mongoose.Schema({
       return this.projectType !== 'content-modification';
     }
   },
-  language: {
+  contentLanguage: {
     type: String,
     required: true
   },

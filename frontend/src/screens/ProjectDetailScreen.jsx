@@ -143,7 +143,7 @@ const ProjectDetailScreen = () => {
                     </tr>
                     <tr>
                       <td><strong>Language</strong></td>
-                      <td>{project.language}</td>
+                      <td>{project.contentLanguage}</td>
                     </tr>
                     <tr>
                       <td><strong>Tone</strong></td>
