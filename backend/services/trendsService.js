@@ -51,33 +51,22 @@ const locationMapping = {
   'India': 'IN',
   'China': 'CN'
 };
-const getRelatedQueries = async(data,language,location,category)=>{
+const getRelatedQueries = async(data, language, location, category) => {
   const geminiModel = getGeminiModel();
   let prompt = `
-Profile/Role:
-You are a machine which takes input and replies only with output.
+Analyze the trending data and select the top 3 most relevant keywords for ${category} in ${location}.
 
-Context:
-You help e-commerce teams quickly identify the top trends by processing large sets of market data. Your primary task is to examine a list of approximately 30 trend data items and eliminate the irrelevant or duplicate trends. You will then select and return only the top 3 most distinct, relevant, and promising trends for the specified product category and target location. These selected trends will guide content and marketing strategies.
-The user inputs include:
-- Location: Country or market region the trends should focus on.
-- Category: The e-commerce category (e.g., Apparel, Electronics, Toys).
-- Language: The desired language for the output.
-- Trend Data: A dataset or list containing ~30 trend data points, each with fields like; Keyword: the trending search query, interest: a numeric or relative score (e.g., 100, 75, etc.) showing the popularity of the keyword, Location: Location of the relevant trend data, such as "Germany" or "England" 
+Category: ${category}
+Location: ${location} 
+Language: ${language}
 
-Workflow:
-1- Parse and understand the provided trend data list.
-2- Remove any duplicate, overlapping, or trend that are unrelated to Category, Location, Language.
-3- Rank the remaining trends based on relevance, uniqueness, and market appeal.
-4- Select the top 3 most impactful trends for the specified category and location.
+Trending Data: ${JSON.stringify(data)}
 
-Constraints:
-- Only include exactly 3 selected trends in the output. Do not add any other thing.
-- Do not include any irrelevant or low-impact trends.
-
-Output Format/Style:
-- Language: ${language}
-- Output: 3 selected trends, with exactly like this: [{keyword: Musiala, interest: 1000, Location: Germany}, {keyword: Rudiger, interest: 100, Location: Germany}, {keyword: Kimmich, interest: 75, Location: Germany}]
+1. Only select keywords relevant to ${category}
+2. Choose the 3 most popular/relevant ones based on interest scores
+3. Return EXACTLY this format: [{"keyword": "example", "interest": 100, "Location": "${location}"}, {"keyword": "example2", "interest": 90, "Location": "${location}"}, {"keyword": "example3", "interest": 80, "Location": "${location}"}]
+4. Use the actual interest scores from the data
+5. Return only the JSON array, nothing else
 
 Examples:
 Input:
@@ -106,7 +95,13 @@ try {
       generatedContent = parseEmbeddedJson(generatedContent);
       return generatedContent;
     } catch (apiError) {
-      console.log('Gemini AI failed for trend analysis, using fallback...');
+      console.error('Gemini AI Error Details:');
+      console.error('- Status:', apiError.status || 'unknown');
+      console.error('- Message:', apiError.message || 'unknown');
+      console.error('- Code:', apiError.code || 'unknown');
+      if (apiError.status === 429) {
+        console.error('RATE LIMIT EXCEEDED - Too many requests to Gemini API');
+      }
       
       // Return error indication for user to see
       return [{
@@ -131,8 +126,11 @@ export const getTrendingKeywords = async (category, location, language) => {
       hours: '168'
     });
     
+    console.log('SerpAPI Response received:', JSON.stringify(response, null, 2));
+    
     let keywords = [];
     keywords = await getRelatedQueries(response, language, geo, category);
+    console.log('Processed keywords from Gemini:', keywords);
     return keywords;
   } catch (error) {
     console.error('Error in getTrendingKeywords:', error);

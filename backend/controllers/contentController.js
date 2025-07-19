@@ -158,7 +158,13 @@ you will be perma-banned"
       const response = await result.response;
       generatedContent = response.text();
     } catch (apiError) {
-      console.log('Gemini API failed, using fallback content generation...');
+      console.error('Gemini Content Generation Error:');
+      console.error('- Status:', apiError.status || 'unknown');
+      console.error('- Message:', apiError.message || 'unknown');
+      console.error('- Code:', apiError.code || 'unknown');
+      if (apiError.status === 429) {
+        console.error('RATE LIMIT EXCEEDED - Too many requests to Gemini API');
+      }
       
       // Fallback content generation
       generatedContent = `
