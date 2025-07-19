@@ -166,32 +166,24 @@ you will be perma-banned"
       }
       
       // Fallback content generation
-      generatedContent = `
-# ${title}
-
-Are you looking for the perfect ${category} solution? Look no further! Our premium ${category} products are designed with ${location} customers in mind.
-
-## Why Choose Our ${category} Products?
-
-${trendKeywordsText.split(', ').map(keyword => 
-  `• **${keyword.charAt(0).toUpperCase() + keyword.slice(1)}**: Top-quality ${keyword} that meets your needs`
-).join('\n')}
-
-## Perfect for ${location} Market
-
-Our ${tone} approach ensures that every product delivers exceptional value. Whether you're a professional or enthusiast, our ${category} selection offers:
-
-- Premium quality and reliability
-- Cutting-edge features and technology  
-- Designed specifically for ${language}-speaking customers
-- Optimized for the ${location} market
+      generatedContent = `${title}
 
 ${contentIntent}
 
-**Ready to experience the difference?** Contact us today to learn more about our ${category} solutions!
+The ${category} market in ${location} is experiencing significant growth and innovation. Current trends indicate strong consumer interest in quality ${category} products that meet evolving needs and preferences.
+
+Key market insights for ${location}:
+
+${trendKeywordsText.split(', ').map((keyword, index) => 
+  `${index + 1}. ${keyword.charAt(0).toUpperCase() + keyword.slice(1)} - showing increased consumer engagement`
+).join('\n')}
+
+This ${tone} analysis reflects current market dynamics in the ${category} sector. The data suggests opportunities for businesses to align with consumer preferences and market trends in ${location}.
+
+For ${language}-speaking audiences, these trends represent meaningful shifts in consumer behavior and preferences within the ${category} industry.
 
 ---
-*This content incorporates trending keywords: ${trendKeywordsText}*
+Note: This content was generated using available trend data when AI services were temporarily unavailable.
       `.trim();
       
     }
@@ -436,44 +428,39 @@ ${originalContent}
         case 'elaborate':
           generatedContent = `${originalContent}
 
-**Enhanced Details:**
+[Elaborated version - AI enhancement temporarily unavailable]
 
-Building upon the original content, here's a more comprehensive perspective. This ${tone} approach provides additional context and valuable insights to help you better understand the content.
+This ${tone} content expands on the original message to provide additional context and detail. The elaboration maintains the core message while offering more comprehensive information suitable for ${language}-speaking audiences.
 
-**Key Features & Benefits:**
-• Enhanced functionality that delivers superior performance and value
-• Improved clarity and comprehensive information
-• Professional quality and attention to detail
-• User-focused design and reliability
+Key aspects that would typically be enhanced:
+- Additional supporting details and examples
+- Extended explanations of key concepts
+- Relevant context and background information
+- Enhanced clarity and readability
 
-**Additional Advantages:**
-- Optimized for ${language}-speaking audiences
-- Clear, professional presentation
-- Comprehensive coverage of important points
-- Exceptional user experience and reliability
-
-This enhanced version provides a thorough overview while maintaining the original message and intent.`;
+Note: Full AI-powered elaboration is temporarily unavailable. Please try again later for enhanced content generation.`;
           break;
 
         case 'summarize':
-          const firstSentence = originalContent.split('.')[0];
-          generatedContent = `**Summary:**
+          const sentences = originalContent.split('.').filter(s => s.trim());
+          const firstTwoSentences = sentences.slice(0, 2).join('. ') + (sentences.length > 1 ? '.' : '');
+          generatedContent = `[Summary - AI enhancement temporarily unavailable]
 
-${firstSentence}. This ${tone} content provides key information in a concise format.
+${firstTwoSentences}
 
-**Quick Benefits:** Clear communication, professional presentation, and focused on essential information for ${language} audiences.`;
+This abbreviated version captures the main points from the original content. A full AI-powered summary would provide more sophisticated condensation while maintaining the ${tone} tone and optimizing for ${language}-speaking audiences.
+
+Note: Complete summarization features are temporarily unavailable. Please try again later for enhanced content processing.`;
           break;
 
         case 'rephrase':
-          const sentences = originalContent.split('.').filter(s => s.trim());
-          generatedContent = sentences.map(sentence => {
-            if (sentence.includes('good')) {
-              return sentence.replace('good', 'excellent').replace('decent', 'outstanding');
-            }
-            return sentence.charAt(0).toUpperCase() + sentence.slice(1).trim();
-          }).join('. ') + '.';
-          
-          generatedContent += `\n\nThis ${tone} version maintains the original meaning while improving clarity and flow for ${language} readers.`;
+          generatedContent = `[Rephrased version - AI enhancement temporarily unavailable]
+
+${originalContent}
+
+The content above maintains the original meaning. A full AI-powered rephrase would restructure the language to improve clarity, flow, and ${tone} tone while ensuring optimal readability for ${language}-speaking audiences.
+
+Note: Advanced rephrasing capabilities are temporarily unavailable. Please try again later for enhanced content transformation.`;
           break;
 
         default:
