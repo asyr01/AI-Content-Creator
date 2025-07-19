@@ -75,7 +75,7 @@ export const createContentDraft = asyncHandler(async (req, res) => {
     await project.save();
 
     // Find what's popular right now
-    const trendingKeywords = await getTrendingKeywords(category, location,language);
+    const trendingKeywords = await getTrendingKeywords(category, location, language, contentIntent);
    
 
     // Add trending keywords to the project
@@ -548,7 +548,7 @@ export const generateImagePrompt = asyncHandler(async (req, res) => {
     await project.save();
 
     // Find what's popular right now for context
-    const trendingKeywords = await getTrendingKeywords(category, location,language);
+    const trendingKeywords = await getTrendingKeywords(category, location, language, contentIntent);
     project.trendingKeywords = trendingKeywords;
     await project.save();
 
