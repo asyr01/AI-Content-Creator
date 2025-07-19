@@ -552,7 +552,7 @@ export const generateImagePrompt = asyncHandler(async (req, res) => {
     const geminiModel = getGeminiModel();
     
     const prompt = `
-Create a simple, effective image generation prompt based on the following content:
+Create a detailed, professional image generation prompt for e-commerce marketing based on the following content:
 
 Content: "${baseContent}"
 
@@ -563,16 +563,16 @@ Specifications:
 - Visual Style: ${visualStyle || 'minimalistic, high-contrast background'}
 
 Requirements for the image prompt:
-1. Create a CONCISE prompt (maximum 200 characters) suitable for AI image generation
-2. Focus on the main subject and key visual elements only
-3. Include the visual style: ${visualStyle}
-4. Use simple, clear descriptive words
-5. Avoid technical jargon, long explanations, or markdown formatting
-6. Make it ${tone} in mood and suitable for ${location} market
+1. Create a detailed prompt suitable for professional e-commerce image generation
+2. Include specific product details, composition, lighting, and background
+3. Incorporate the ${tone} tone through visual elements (colors, mood, styling)
+4. Consider ${location} market preferences and cultural aesthetics
+5. Ensure the prompt results in high-quality, marketing-ready product visuals
+6. Include technical specifications like lighting setup, camera angle, and composition
+7. Specify background, props, and styling that enhance the product appeal
+8. Make it suitable for e-commerce platforms and marketing materials
 
-Example format: "A [subject] with [key features], [visual style], [mood/tone], professional marketing photo"
-
-Generate a SHORT, simple image prompt that will create effective visuals.
+Generate a comprehensive, detailed image prompt that will create professional e-commerce product visuals that convert customers and represent the brand effectively.
 `;
 
     let imagePrompt;
@@ -585,8 +585,9 @@ Generate a SHORT, simple image prompt that will create effective visuals.
     } catch (apiError) {
       console.log('Gemini API failed, using fallback image prompt generation...');
       
-      // Fallback image prompt generation  
-      imagePrompt = `A ${category} product, ${baseContent.substring(0, 100)}, ${visualStyle}, ${tone} mood, professional marketing photo`;
+      // Fallback image prompt generation with e-commerce focus
+      const productDescription = baseContent.substring(0, 150);
+      imagePrompt = `Professional e-commerce product photography of a ${category} item: ${productDescription}. Shot with ${visualStyle} aesthetic, featuring ${tone} mood and premium quality lighting. High-resolution commercial photography with clean background, perfect for online retail. Professional studio lighting with soft shadows, optimal composition for product catalogs, lifestyle context suitable for ${location} market, marketing-ready image with excellent detail and color accuracy.`;
       
       console.log('Fallback image prompt generated, length:', imagePrompt.length);
     }
