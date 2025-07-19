@@ -1,4 +1,3 @@
-import { json } from 'express';
 import googleTrends from 'google-trends-api';
 import { getJson } from "serpapi";
 import { getGeminiModel } from '../utils/geminiClient.js';
@@ -177,41 +176,3 @@ export const getTrendingKeywords = async (category, location, language, contentI
 }
 ;
 
-// export const getRelatedTopics = async (category, location) => {
-//   try {
-//     const geoCode = (locationMapping[location] || 'us').toUpperCase();
-//     const mainKeyword = categoryMapping[category.toLowerCase()]?.[0] || category;
-    
-//     const results = await googleTrends.relatedTopics({
-//       keyword: mainKeyword,
-//       startTime: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
-//       endTime: new Date(),
-//       geo: geoCode
-//     });
-    
-//     const data = JSON.parse(results);
-//     const relatedTopics = data.default?.rankedList?.[0]?.rankedKeyword || [];
-    
-//     return relatedTopics.slice(0, 10).map(topic => ({
-//       topic: topic.topic?.title || topic.query,
-//       value: topic.value || Math.floor(Math.random() * 100)
-//     }));
-    
-//   } catch (error) {
-//     console.error('Error in getRelatedTopics:', error);
-    
-//     // Fallback related topics
-//     const fallbackTopics = [
-//       `trending ${category}`,
-//       `popular ${category}`,
-//       `best ${category}`,
-//       `new ${category}`,
-//       `${category} trends`
-//     ];
-    
-//     return fallbackTopics.map(topic => ({
-//       topic: topic,
-//       value: Math.floor(Math.random() * 80) + 20
-//     }));
-//   }
-// };
