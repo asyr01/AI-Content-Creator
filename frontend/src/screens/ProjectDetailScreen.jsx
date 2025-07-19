@@ -255,16 +255,36 @@ const ProjectDetailScreen = () => {
                     >
                       Copy to Clipboard
                     </Button>
-                    {project.projectType === 'image-prompt' && (
-                      <Button 
-                        variant="outline-info"
-                        href="https://openai.com/dall-e-2"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Try in DALL-E
-                      </Button>
-                    )}
+                  </div>
+                </Card.Body>
+              </Card>
+            )}
+
+            {/* Generated Image */}
+            {project.generatedImageUrl && (
+              <Card className="mb-4">
+                <Card.Header>
+                  <h5 className="mb-0">🖼️ Generated Image</h5>
+                </Card.Header>
+                <Card.Body className="text-center">
+                  <img 
+                    src={project.generatedImageUrl} 
+                    alt="Generated from prompt" 
+                    className="img-fluid rounded shadow"
+                    style={{ maxHeight: '500px', maxWidth: '100%' }}
+                  />
+                  <div className="mt-3">
+                    <Button 
+                      variant="outline-success" 
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = project.generatedImageUrl;
+                        link.download = `generated-image-${project._id}.png`;
+                        link.click();
+                      }}
+                    >
+                      📥 Download Image
+                    </Button>
                   </div>
                 </Card.Body>
               </Card>
