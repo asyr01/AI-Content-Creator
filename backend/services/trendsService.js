@@ -123,10 +123,12 @@ export const getTrendingKeywords = async (category, location, language, contentI
     const searchTerms = categoryMapping[category.toLowerCase()] || [category];
     const mainTerm = searchTerms[0];
     
-    console.log('Category passed:', category);
-    console.log('Category mapping found:', searchTerms);
-    console.log('Main term for SerpAPI:', mainTerm);
-    console.log('Location (geo):', geo);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Category passed:', category);
+      console.log('Category mapping found:', searchTerms);
+      console.log('Main term for SerpAPI:', mainTerm);
+      console.log('Location (geo):', geo);
+    }
     
     const response = await getJson({
       engine: 'google_trends',
@@ -137,7 +139,9 @@ export const getTrendingKeywords = async (category, location, language, contentI
       data_type: 'RELATED_QUERIES'
     });
     
-    console.log('SerpAPI Response received:', JSON.stringify(response, null, 2));
+    if (process.env.NODE_ENV === 'development') {
+      console.log('SerpAPI Response received:', JSON.stringify(response, null, 2));
+    }
     
     // Extract just the keywords from SerpAPI response
     let extractedKeywords = [];
@@ -156,11 +160,16 @@ export const getTrendingKeywords = async (category, location, language, contentI
       extractedKeywords = extractedKeywords.sort((a, b) => b.interest - a.interest);
     }
     
-    console.log('Extracted keywords from SerpAPI:', extractedKeywords);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Extracted keywords from SerpAPI:', extractedKeywords);
+    }
     
     let keywords = [];
     keywords = await getRelatedQueries(extractedKeywords, language, geo, category, contentIntent);
-    console.log('Processed keywords from Gemini:', keywords);
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Processed keywords from Gemini:', keywords);
+    }
     return keywords;
   } catch (error) {
     console.error('Error in getTrendingKeywords:', error);

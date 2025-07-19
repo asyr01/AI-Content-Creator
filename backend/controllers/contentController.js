@@ -7,7 +7,9 @@ import asyncHandler from '../middleware/asyncHandler.js';
 // Keep track of how many projects each user creates
 const updateUserStats = async (userId, projectType) => {
   try {
-    console.log('Updating user stats for:', userId, 'project type:', projectType);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Updating user stats for:', userId, 'project type:', projectType);
+    }
     
     const updateObj = {
       $inc: {
@@ -32,7 +34,9 @@ const updateUserStats = async (userId, projectType) => {
     }
 
     const result = await User.findByIdAndUpdate(userId, updateObj, { new: true });
-    console.log('User stats updated successfully. New stats:', result.stats);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('User stats updated successfully. New stats:', result.stats);
+    }
   } catch (error) {
     console.error('Error updating user stats:', error);
   }
@@ -413,9 +417,13 @@ ${originalContent}
       const result = await geminiModel.generateContent(prompt);
       const response = await result.response;
       generatedContent = response.text();
-      console.log('Content modification successful via Gemini AI');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Content modification successful via Gemini AI');
+      }
     } catch (apiError) {
-      console.log('Gemini API failed, using fallback content modification...');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Gemini API failed, using fallback content modification...');
+      }
       
       // Fallback content modification based on type
       switch (modificationType) {
@@ -435,7 +443,9 @@ ${originalContent}
           generatedContent = originalContent;
       }
       
-      console.log('Fallback content modification generated, length:', generatedContent.length);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Fallback content modification generated, length:', generatedContent.length);
+      }
     }
 
     // Save the AI-generated content
@@ -533,9 +543,13 @@ Generate a concise but detailed image prompt (2-3 sentences) that will produce a
       const result = await geminiModel.generateContent(prompt);
       const response = await result.response;
       imagePrompt = response.text();
-      console.log('Image prompt generation successful via Gemini AI');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Image prompt generation successful via Gemini AI');
+      }
     } catch (apiError) {
-      console.log('Gemini API failed, using fallback image prompt generation...');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Gemini API failed, using fallback image prompt generation...');
+      }
       
       // Fallback image prompt generation
       imagePrompt = `Image prompt generation is temporarily unavailable due to API limits. Please try again in a few minutes.`;

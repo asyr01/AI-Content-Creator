@@ -64,14 +64,18 @@ const checkForJailbreak = (text) => {
   // Check for jailbreak patterns
   for (const pattern of jailbreakPatterns) {
     if (pattern.test(text)) {
-      console.log(`Jailbreak attempt detected: Pattern "${pattern}" matched`);
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Jailbreak attempt detected: Pattern "${pattern}" matched`);
+      }
       return true;
     }
   }
   
   // Check if text is very long (potential prompt injection)
   if (text.length > 5000) {
-    console.log('Jailbreak attempt detected: Text too long');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Jailbreak attempt detected: Text too long');
+    }
     return true;
   }
   
@@ -97,7 +101,9 @@ const jailbreakPrevention = (req, res, next) => {
       const content = req.body[field];
       if (content && checkForJailbreak(content)) {
         console.log(`Jailbreak attempt blocked on field: ${field}`);
-        console.log(`Content: ${content.substring(0, 200)}...`);
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`Content: ${content.substring(0, 200)}...`);
+        }
         
         return res.status(400).json({
           error: 'Request blocked',
