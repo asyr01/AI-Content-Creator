@@ -585,20 +585,12 @@ Generate a SHORT, simple image prompt that will create effective visuals.
     } catch (apiError) {
       console.log('Gemini API failed, using fallback image prompt generation...');
       
-      // Fallback image prompt generation
-      imagePrompt = `A ${category} product with ${baseContent.substring(0, 100)}, ${visualStyle}, ${tone} mood, professional marketing photo`;
-Subject Focus
-Identify exactly what product, person, or scene is featured.
-Use singular or numbered plural forms (e.g., "a single model," "three pairs of shoes") for clarity.
-Medium and Style
-Describe the medium or visual treatment (e.g., high-resolution photo, watercolor illustration, digital painting).
-Define the aesthetic clearly and incorporate the Visual Style Preference (${visualStyle}) as part of the description.
-Environment
-Specify the environment or setting (e.g., indoors, outdoors, city street, studio backdrop).
-Provide contextual details relevant to the location or brand.
-Lighting
-Clearly describe lighting conditions (e.g., soft natural light, diffused studio lighting, warm sunset glow).
-Color Palette
+      // Fallback image prompt generation  
+      imagePrompt = `A ${category} product, ${baseContent.substring(0, 100)}, ${visualStyle}, ${tone} mood, professional marketing photo`;
+      
+      console.log('Fallback image prompt generated, length:', imagePrompt.length);
+    }
+/* Color Palette
 State the main colors or mood of the palette (e.g., vibrant, muted, monochromatic).
 Avoid vague terms like "nice colors."
 Mood and Tone Consistency
@@ -625,10 +617,7 @@ Visual Style Preference: Soft, pastel, friendly atmosphere
 Content Intent: I would like to create a post on Instagram to sell our man jeans.
 Output
  Create a high-resolution Instagram image showing a confident male model wearing a single pair of slim-fit dark-wash jeans, standing on a modern European city sidewalk surrounded by softly blurred architecture in warm pastel hues. The visual style should feel friendly and approachable, with a soft, pastel atmosphere that highlights the product in a contemporary yet inviting way. Use natural side lighting with gentle shadows to emphasize the denim’s texture and quality. The color palette should feature muted beige, dusty blue, and soft gray tones to support a persuasive, welcoming mood that resonates with style-conscious German consumers. Format the composition as a vertical 4:5 portrait suitable for Instagram, with the model centered prominently in the frame and no distracting elements in the background.
-`;
-      
-      console.log('Fallback image prompt generated, length:', imagePrompt.length);
-    }
+*/
 
     // Update project with generated prompt
     project.generatedContent = imagePrompt;
