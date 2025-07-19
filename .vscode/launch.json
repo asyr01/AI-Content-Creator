@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // … your existing Launch Backend config …
+
+    // New attach config:
+    {
+      "name": "Attach to Backend",
+      "type": "pwa-node",
+      "request": "attach",
+      "port": 9229,
+      "restart": true,
+      "localRoot": "${workspaceFolder}/backend",
+      "remoteRoot": "${workspaceFolder}/backend"
+    }
+  ]
+}
